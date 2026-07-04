@@ -1,16 +1,24 @@
 // файл слайсу для контактів
 import { createSlice } from "@reduxjs/toolkit";
-import { initialState } from "./store";
+
+
+ const initialState = {
+    items: [] 
+}
+
 
 const contactsSlice = createSlice({
     name: 'contacts',
-    initialState: initialState.contacts,
+    initialState,
     reducers: {
         addContact(state, {payload}) {
-            state.push(payload)
+            state.items.push(payload)
         },
         deleteContact(state, {payload}) {
-            const index = state.filter(el => el !== payload)
+            state.items = state.items.filter(el => el.id !== payload)
         }
     }
 })
+
+export const { addContact, deleteContact } = contactsSlice.actions
+export default contactsSlice.reducer

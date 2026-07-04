@@ -1,14 +1,24 @@
 import style from './SearchBox.module.css'
 import {Formik, Form, Field} from 'formik'
+import { useDispatch } from 'react-redux';
+import { changeFilter } from '../../redux/filtersSlice';
+
+// використаємо для скидання значення фільтра при оновленні сторінки
+import { useEffect } from 'react'; 
 
 
-const SearchBox = ({onSearch}) => {
+const SearchBox = () => {
+    const dispatch = useDispatch()
+    useEffect(() => {
+        dispatch(changeFilter(''))
+    })
+
     return (
         <div className={style['search-container']}>
             <label htmlFor='query' className={style['search-label']}>
                 Find contacts by name
             </label>
-            <Formik initialValues={{query: ''}} unSubmit={() => {}}>
+            <Formik initialValues={{query: ''}} onSubmit={() => {}}>
                 {({handleChange}) => (
                     <Form className={style['search-box']}>
                         <Field 
@@ -17,7 +27,7 @@ const SearchBox = ({onSearch}) => {
                         className={style['search-input']}
                         onChange={(e) => {
                             handleChange(e);
-                            onSearch(e.target.value);
+                            dispatch(changeFilter(e.target.value));
                         }}/>  
                     </Form>
                 )}
